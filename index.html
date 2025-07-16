@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The NerdyIntruder’s Blueprint For F&O Trading</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .light body {
+            background-color: #F0F8FF; /* AliceBlue */
+            color: #36454F; /* Charcoal */
+        }
+        .dark body {
+            background-color: #1A202C; /* Dark Gray */
+            color: #E2E8F0; /* Light Gray */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .light .chart-container {
+            background-color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .dark .chart-container {
+            background-color: #2D3748; /* Darker Gray */
+            box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .gradient-bg-blue {
+            background: linear-gradient(to right, #1E90FF, #45B7D1);
+        }
+        .gradient-bg-green {
+            background: linear-gradient(to right, #32CD32, #4ECDC4);
+        }
+        .gradient-bg-orange {
+            background: linear-gradient(to right, #FF8C00, #F9A825);
+        }
+        .card {
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+        .light .card {
+            background-color: white;
+            box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .dark .card {
+            background-color: #2D3748; /* Darker Gray */
+            box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.15), 0 6px 10px -3px rgba(0, 0, 0, 0.08);
+        }
+        .flowchart-step {
+            position: relative;
+            border-width: 3px;
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+            transition: all 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+        }
+        .light .flowchart-step.border-[#4ECDC4] { border-color: #4ECDC4; background-color: #E0FFFF; } /* LightCyan */
+        .dark .flowchart-step.border-[#4ECDC4] { border-color: #32CD32; background-color: #2F4F4F; } /* DarkSlateGray */
+        .light .flowchart-step.border-[#45B7D1] { border-color: #45B7D1; background-color: #E0FFFF; } /* LightCyan */
+        .dark .flowchart-step.border-[#45B7D1] { border-color: #1E90FF; background-color: #2F4F4F; } /* DarkSlateGray */
+        .light .flowchart-step.border-[#F9A825] { border-color: #F9A825; background-color: #FFFACD; } /* LemonChiffon */
+        .dark .flowchart-step.border-[#F9A825] { border-color: #FF8C00; background-color: #2F4F4F; } /* DarkSlateGray */
+        .light .flowchart-step.border-[#FF6B6B] { border-color: #FF6B6B; background-color: #FFE0E0; } /* MistyRose */
+        .dark .flowchart-step.border-[#FF6B6B] { border-color: #FF4500; background-color: #2F4F4F; } /* DarkSlateGray */
+
+        .flowchart-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .flowchart-arrow {
+            font-size: 3rem;
+            transition: color 0.3s ease;
+        }
+        .light .flowchart-arrow { color: #1E90FF; }
+        .dark .flowchart-arrow { color: #45B7D1; }
+
+        @media (min-width: 1024px) {
+            .flowchart-arrow {
+                transform: rotate(0deg);
+                margin: 0 1.5rem;
+             }
+        }
+        .kpi-value {
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1;
+            transition: color 0.3s ease;
+        }
+        .light .kpi-value { color: #1E90FF; }
+        .dark .kpi-value { color: #45B7D1; }
+
+        .kpi-description {
+            font-size: 1.125rem;
+            transition: color 0.3s ease;
+        }
+        .light .kpi-description { color: #556B2F; }
+        .dark .kpi-description { color: #90EE90; }
+
+        .frvp-visual {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+            height: 250px;
+            border: 1px solid;
+            border-radius: 8px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin: 0 auto;
+            overflow: hidden;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .light .frvp-visual { background-color: #F8F8F8; border-color: #E0E0E0; }
+        .dark .frvp-visual { background-color: #3A4750; border-color: #4F5E6B; }
+
+        .frvp-bar {
+            height: 20px;
+            border-radius: 2px;
+            margin-bottom: 4px;
+            transition: width 0.5s ease-out;
+        }
+        .light .frvp-bar { background-color: #6495ED; } /* CornflowerBlue */
+        .dark .frvp-bar { background-color: #5F9EA0; } /* CadetBlue */
+
+        .frvp-label {
+            position: absolute;
+            left: 10px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        .light .frvp-label { color: #2F4F4F; }
+        .dark .frvp-label { color: #A9A9A9; } /* DarkGray */
+
+        .frvp-poc { background-color: #FF8C00; } /* DarkOrange */
+        .frvp-vah { background-color: #32CD32; } /* LimeGreen */
+        .frvp-val { background-color: #1E90FF; } /* DodgerBlue */
+
+        .price-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background-color: #FF4500; /* OrangeRed */
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            box-shadow: 0 0 8px rgba(255, 69, 0, 0.7);
+        }
+        .animated-dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: #FF4500;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite alternate;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.2); opacity: 1; }
+        }
+        .risk-reward-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            font-size: 1.5rem;
+        }
+        .light .text-gray-600 { color: #4A5568; }
+        .dark .text-gray-600 { color: #A0AEC0; }
+        .light .text-gray-700 { color: #2D3748; }
+        .dark .text-gray-700 { color: #CBD5E0; }
+        .light .text-[#2F4F4F] { color: #2F4F4F; }
+        .dark .text-[#2F4F4F] { color: #E2E8F0; }
+        .light .text-[#36454F] { color: #36454F; }
+        .dark .text-[#36454F] { color: #F8F8F8; }
+
+        .light .bg-gray-50 { background-color: #F9FAFB; }
+        .dark .bg-gray-50 { background-color: #4A5568; }
+        .light .border-gray-200 { border-color: #EDF2F7; }
+        .dark .border-gray-200 { border-color: #4A5568; }
+
+        #theme-toggle {
+            cursor: pointer;
+            font-size: 1.8rem;
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            color: white;
+            z-index: 10;
+            transition: color 0.3s ease;
+        }
+        .light #theme-toggle { color: white; }
+        .dark #theme-toggle { color: #FFD700; } /* Gold */
+
+        @keyframes bounce-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .sector-mindmap-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .light .sector-mindmap-container {
+            background-color: #F8F8F8;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+        }
+        .dark .sector-mindmap-container {
+            background-color: #3A4750;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);
+        }
+
+        .sector-mindmap-center {
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px; /* pill shape */
+            background-color: #1E90FF;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+            transition: background-color 0.3s ease;
+        }
+        .dark .sector-mindmap-center {
+            background-color: #45B7D1;
+        }
+
+        .sector-mindmap-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+            width: 100%;
+        }
+        .sector-mindmap-item {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+        .light .sector-mindmap-item {
+            background-color: white;
+            border-color: #CED4DA;
+            color: #36454F;
+        }
+        .dark .sector-mindmap-item {
+            background-color: #2D3748;
+            border-color: #4A5568;
+            color: #E2E8F0;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Palette: Energetic & Playful (Adapted for Light/Dark Mode) -->
+    <!-- Neither Mermaid JS NOR SVG were used anywhere in the output. -->
+    <!-- Plan:
+        1. Add Light/Dark Mode Toggle: HTML button, JS logic, CSS for dark theme.
+        2. Add User Handle: In the footer.
+        3. Enhanced Explanations & Visuals:
+            - ORB: Separate sections/charts for Bullish & Bearish ORB with detailed explanations.
+            - FRVP: Enhanced text explanation, static visual remains illustrative.
+            - VWAP: Expanded explanation on dynamic S/R, pullbacks, and market conditions.
+            - "Why this works": New section explaining confluence, institutional logic, Indian F&O context.
+            - Emotional Control & Risk/Reward: Deeper explanations.
+        4. Apply consistent vibrant palette (adapted for dark mode) and gradients.
+        5. Add Sector Mindmap: Use structured HTML/CSS to represent sectors in a mindmap-like fashion within the "Sector Momentum" section.
+    -->
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-16 py-12 rounded-xl gradient-bg-blue text-white shadow-lg relative">
+            <button id="theme-toggle" aria-label="Toggle light and dark mode">
+                ☀️
+            </button>
+            <h1 class="text-4xl md:text-6xl font-black mb-4">The NerdyIntruder’s Blueprint For F&O Trading 📈📊🚀</h1>
+            <p class="text-lg md:text-xl max-w-3xl mx-auto opacity-90">Unlock consistent trading performance with a systematic, volume-informed, and disciplined strategy. This blueprint guides you to early market signals and strong momentum trades.</p>
+        </header>
+
+        <section id="pillars" class="mb-20">
+             <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-[#2F4F4F]">The Core Pillars of Precision Trading</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card p-6 flex flex-col items-center">
+                    <div class="text-6xl mb-4 text-[#1E90FF]">👀</div>
+                    <h3 class="text-2xl font-bold mb-2 text-[#36454F]">Sector Watch</h3>
+                    <p class="text-gray-700 text-center">**Why it's crucial:** Identifying the strongest and weakest sectors in the first hour reveals where institutional money is actively flowing. Early sector strength often precedes significant moves in individual stocks within that sector, providing a high-probability hunting ground for your trades. It helps you avoid stagnant or lagging areas of the market.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center">
+                    <div class="text-6xl mb-4 text-[#32CD32]">⏱️</div>
+                    <h3 class="text-2xl font-bold mb-2 text-[#36454F]">Opening Range Breakout (ORB)</h3>
+                    <p class="text-gray-700 text-center">**Why it's crucial:** The ORB captures the market's initial directional bias, often established by large institutional players. A clean breakout above or below this early range (typically 15, 30, or 60 minutes) signals strong conviction and provides powerful early entry points before the crowd catches on, especially potent in volatile Indian F&O markets.</p>
+                </div>
+                <div class="card p-6 flex flex-col items-center">
+                    <div class="text-6xl mb-4 text-[#FF8C00]">📊</div>
+                    <h3 class="text-2xl font-bold mb-2 text-[#36454F]">Fixed Range Volume Profile (FRVP)</h3>
+                    <p class="text-gray-700 text-center">**Why it's crucial:** FRVP decodes market structure by showing where the most trading volume occurred over a fixed period (e.g., previous day). This reveals true areas of liquidity, indicating strong support (Value Area Low - VAL), resistance (Value Area High - VAH), and the price of 'fair value' (Point of Control - POC). It helps you anticipate price reactions around these significant levels.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="process-flow" class="mb-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-[#2F4F4F]">Your Systematic Trading Journey: A Step-by-Step Flow</h2>
+            <p class="text-center text-gray-700 max-w-3xl mx-auto mb-12">This disciplined top-down approach filters market noise, leading you from broad sector analysis to high-probability individual stock selection and precise execution.</p>
+            <div class="flex flex-col lg:flex-row justify-center items-center">
+                <div class="flowchart-step border-[#4ECDC4] w-full lg:w-1/5">
+                    <div class="text-4xl text-[#32CD32] mb-2">1.</div>
+                    <h3 class="font-bold text-xl text-[#36454F]">Sector Scan</h3>
+                    <p class="text-sm text-gray-700">First hour observation, Heatmap Ranking to find top sectors.</p>
+                </div>
+                <div class="flowchart-arrow transform rotate-90 lg:rotate-0">→</div>
+                <div class="flowchart-step border-[#45B7D1] w-full lg:w-1/5">
+                    <div class="text-4xl text-[#1E90FF] mb-2">2.</div>
+                    <h3 class="font-bold text-xl text-[#36454F]">ORB & FRVP Analysis</h3>
+                    <p class="text-sm text-gray-700">Confirm directional bias and identify key volume levels.</p>
+                </div>
+                <div class="flowchart-arrow transform rotate-90 lg:rotate-0">→</div>
+                <div class="flowchart-step border-[#F9A825] w-full lg:w-1/5">
+                    <div class="text-4xl text-[#FF8C00] mb-2">3.</div>
+                    <h3 class="font-bold text-xl text-[#36454F]">Top Stock Selection</h3>
+                    <p class="text-sm text-gray-700">Pick 1-3 stocks with clean ORB breaks from the chosen sector.</p>
+                </div>
+                 <div class="flowchart-arrow transform rotate-90 lg:rotate-0">→</div>
+                <div class="flowchart-step border-[#FF6B6B] w-full lg:w-1/5">
+                    <div class="text-4xl text-[#FF6B6B] mb-2">4.</div>
+                    <h3 class="font-bold text-xl text-[#36454F]">Execute & Manage</h3>
+                    <p class="text-sm text-gray-700">Apply 1:2 R:R, precise stop loss & profit targets.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="deep-dive" class="mb-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-[#2F4F4F]">Deep Dive: Understanding Key Indicators in Action</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+
+                <div class="card p-6 lg:col-span-2">
+                    <h3 class="text-2xl font-bold mb-2 text-center text-[#36454F]">Sector Momentum: Your Market Compass</h3>
+                    <p class="text-sm text-gray-700 text-center mb-6">**Why it matters:** The market moves in sectors. Identifying the strongest sectors early in the day gives you a significant edge. Think of it as finding the 'hot spots' where institutional money is actively flowing. This approach allows you to participate in high-momentum moves and avoid stagnant or lagging areas of the market, which is crucial for efficiency in Indian F&O trading.</p>
+                    <div class="chart-container">
+                        <canvas id="sectorPerformanceChart"></canvas>
+                    </div>
+                    <div class="text-center mt-4 text-gray-700">
+                        <p class="mb-2">**Insight:** Focus on sectors with the highest momentum scores (e.g., Technology, Healthcare in this example). These are your primary candidates for stock selection.</p>
+                        <p class="mb-2">**Indian Market Context:** In Indian markets, sectors like Banking (Bank Nifty), IT, Pharma, and Auto often show clear directional biases. Observing their early performance is key to identifying potential F&O opportunities.</p>
+                    </div>
+
+                    <div class="sector-mindmap-container">
+                        <div class="sector-mindmap-center">Indian Market Sectors</div>
+                        <div class="sector-mindmap-group">
+                            <div class="sector-mindmap-item">AUTO</div>
+                            <div class="sector-mindmap-item">BANK</div>
+                            <div class="sector-mindmap-item">CEMENT</div>
+                            <div class="sector-mindmap-item">ENERGY</div>
+                            <div class="sector-mindmap-item">FIN SERVICE</div>
+                            <div class="sector-mindmap-item">FMCG</div>
+                            <div class="sector-mindmap-item">IT</div>
+                            <div class="sector-mindmap-item">METAL</div>
+                            <div class="sector-mindmap-item">NIFTY 50</div>
+                            <div class="sector-mindmap-item">NIFTY MID SELECT</div>
+                            <div class="sector-mindmap-item">PHARMA</div>
+                            <div class="sector-mindmap-item">PVT BANK</div>
+                            <div class="sector-mindmap-item">PSU BANK</div>
+                            <div class="sector-mindmap-item">REALTY</div>
+                            <div class="sector-mindmap-item">SENSEX</div>
+                        </div>
+                        <p class="text-xs text-gray-600 mt-4 text-center">These are some of the key sectors and indices to monitor for early momentum and trading opportunities in the Indian market.</p>
+                    </div>
+                </div>
+
+                <div class="card p-6">
+                    <h3 class="text-2xl font-bold mb-2 text-center text-[#36454F]">Bullish Opening Range Breakout (ORB): Riding the Uptrend</h3>
+                     <p class="text-sm text-gray-700 text-center mb-6">**Scenario:** Price breaks *above* the ORB high. This signals strong buying pressure and indicates that large players are accumulating. It's a powerful signal for an upward trend. Your entry strategy here is to look for a pullback to the newly established ORB high (which now acts as dynamic support) or to the VWAP, confirming the strength before entering.</p>
+                    <div class="chart-container">
+                        <canvas id="bullishOrbChart"></canvas>
+                    </div>
+                    <div class="text-center mt-4 text-gray-700">
+                        <p class="mb-2"><span class="font-bold text-[#1E90FF]">Stock Price:</span> Shows the upward movement after breaking the ORB.</p>
+                        <p class="mb-2"><span class="font-bold text-[#FF8C00]">ORB High (Resistance → Support):</span> The crucial level that, once broken, becomes a strong support zone.</p>
+                        <p class="mb-2"><span class="font-bold text-[#CED4DA]">ORB Low:</span> The bottom of the initial range.</p>
+                        <p class="mt-4 font-bold">Entry Strategy:</p>
+                        <p>Look for price to break ORB high, then ideally pull back to test the ORB high or VWAP (not shown on this chart but crucial for confluence) before continuing its move. This pullback offers a lower-risk entry.</p>
+                    </div>
+                </div>
+
+                <div class="card p-6">
+                    <h3 class="text-2xl font-bold mb-2 text-center text-[#36454F]">Bearish Opening Range Breakout (ORB): Capitalizing on Downtrends</h3>
+                     <p class="text-sm text-gray-700 text-center mb-6">**Scenario:** Price breaks *below* the ORB low. This indicates strong selling pressure and suggests that large players are distributing. It's a clear signal for a potential downward trend. For entry, consider a pullback to the ORB low (which now acts as dynamic resistance) or to the VWAP, confirming the weakness before initiating a short trade.</p>
+                    <div class="chart-container">
+                        <canvas id="bearishOrbChart"></canvas>
+                    </div>
+                    <div class="text-center mt-4 text-gray-700">
+                        <p class="mb-2"><span class="font-bold text-[#FF6B6B]">Stock Price:</span> Illustrates the downward movement after breaking the ORB.</p>
+                        <p class="mb-2"><span class="font-bold text-[#CED4DA]">ORB High:</span> The top of the initial range.</p>
+                        <p class="mb-2"><span class="font-bold text-[#FF8C00]">ORB Low (Support → Resistance):</span> The critical level that, once broken, becomes a strong resistance zone.</p>
+                        <p class="mt-4 font-bold">Entry Strategy:</p>
+                        <p>Look for price to break ORB low, then ideally pull back to test the ORB low or VWAP (not shown on this chart but crucial for confluence) before resuming its decline. This pullback offers a lower-risk short entry.</p>
+                    </div>
+                </div>
+                
+                <div class="card p-6 lg:col-span-2">
+                    <h3 class="text-2xl font-bold mb-2 text-center text-[#36454F]">Fixed Range Volume Profile (FRVP): Decoding the Market's Memory</h3>
+                    <p class="text-sm text-gray-700 text-center mb-6">**Why it matters:** FRVP provides a vertical histogram of volume at different price levels over a fixed range (e.g., the previous day's trading session). It reveals where the most trading activity occurred, which are essentially areas of high liquidity and agreement among market participants. These levels act as powerful magnets for price and often serve as key support or resistance.</p>
+                    <div class="w-full flex flex-col md:flex-row justify-center items-center gap-8">
+                        <div class="frvp-visual">
+                            <div class="frvp-label" style="top: 10%;">VAH</div>
+                            <div class="frvp-label" style="top: 45%;">POC</div>
+                            <div class="frvp-label" style="top: 80%;">VAL</div>
+                            <div class="frvp-bar frvp-vah" style="width: 70%;"></div>
+                            <div class="frvp-bar" style="width: 85%;"></div>
+                            <div class="frvp-bar frvp-poc" style="width: 95%;"></div>
+                            <div class="frvp-bar" style="width: 80%;"></div>
+                            <div class="frvp-bar frvp-val" style="width: 60%;"></div>
+                            <div class="price-line" style="top: 20%;"><div class="animated-dot" style="right: -6px;"></div></div>
+                        </div>
+                        <div class="text-center md:text-left max-w-md">
+                            <p class="mb-2"><span class="font-bold text-[#32CD32]">VAH (Value Area High):</span> The top of the Value Area (typically 70% of volume). Price often finds resistance here, or if broken, it can act as support.</p>
+                            <p class="mb-2"><span class="font-bold text-[#FF8C00]">POC (Point of Control):</span> The price level with the highest traded volume. This is the 'fair value' area. Price tends to gravitate towards it. Consolidation around POC suggests indecision, while a strong move *away* from POC indicates trend conviction.</p>
+                            <p class="mb-2"><span class="font-bold text-[#1E90FF]">VAL (Value Area Low):</span> The bottom of the Value Area. Price often finds support here, or if broken, it can act as resistance.</p>
+                            <p class="mt-4"><span class="font-bold text-[#FF4500]">Insight:</span> These levels are critical for setting precise profit targets and stop losses. For instance, after a bullish ORB, the next FRVP VAH could be your profit target. If a stock is consolidating, trading between VAH and VAL might be an option, or waiting for a break from this range.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-6 lg:col-span-2">
+                    <h3 class="text-2xl font-bold mb-2 text-center text-[#36454F]">Volume Weighted Average Price (VWAP): The Institutional Benchmark</h3>
+                    <p class="text-sm text-gray-700 text-center mb-6">**Why it matters:** VWAP is the average price of a stock, weighted by its trading volume. It's a crucial benchmark for institutional traders, who often try to buy below VWAP and sell above it. For retail traders, VWAP acts as a dynamic support in uptrends and resistance in downtrends. It's an excellent tool for confirming entries, especially after an ORB breakout, and identifying high-probability pullback zones.</p>
+                    <div class="chart-container">
+                        <canvas id="vwapChart"></canvas>
+                    </div>
+                    <div class="text-center mt-4 text-gray-700">
+                        <p class="mb-2"><span class="font-bold text-[#FF8C00]">ORB High/Low:</span> The initial range. A break confirms the market's early bias.</p>
+                        <p class="mb-2"><span class="font-bold text-[#32CD32]">VWAP:</span> The green line. Notice how price often pulls back to VWAP after an ORB breakout, offering high-probability entry points for trend continuation. This is where you can look for your 'buy the dip' or 'sell the rally' opportunities.</p>
+                        <p class="mb-2"><span class="font-bold text-[#FF4500]">Price Action:</span> The red line. Observe how price respects VWAP, especially after a strong initial move. Entries around VWAP significantly improve your risk-reward profile.</p>
+                        <p class="mt-4 font-bold">VWAP in Different Market Conditions (Indian F&O):</p>
+                        <ul class="list-disc list-inside text-left mx-auto max-w-md">
+                            <li><span class="font-bold">Trending Markets (e.g., Nifty/Bank Nifty on a strong day):</span> Price tends to stay above VWAP in uptrends, and below in downtrends. Pullbacks to VWAP offer excellent entry opportunities, especially when combined with an ORB breakout.</li>
+                            <li><span class="font-bold">Range-Bound/Choppy Markets (e.g., Nifty/Bank Nifty consolidating):</span> Price often oscillates around VWAP, crossing it frequently. In such cases, VWAP might not offer clear directional signals, and it's better to rely more on FRVP levels (VAH/VAL) or wait for a clear ORB breakout from the range.</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="why-it-works" class="mb-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-[#2F4F4F]">Why This Blueprint Works: The Confluence Edge</h2>
+            <p class="text-center text-gray-700 max-w-3xl mx-auto mb-12">This strategy isn't just a collection of indicators; it's a powerful confluence of market principles that provide a unique edge, especially in the dynamic Indian F&O markets. It's about aligning with the underlying mechanics of how markets move.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="card p-6">
+                    <h3 class="text-2xl font-bold mb-4 text-center text-[#36454F]">Institutional Footprints: Trading with the Big Players</h3>
+                    <p class="text-gray-700 mb-4">The strategy is meticulously built around identifying the early actions of large institutional players. The Opening Range is often a direct reflection of their initial positions, and VWAP (Volume Weighted Average Price) precisely reflects their average entry price. By observing and aligning your trades with these "smart money" flows, you significantly increase your probability of success, as institutions drive the major moves.</p>
+                    <p class="text-gray-700">**Indian F&O Context:** Indian markets, particularly the Futures & Options segments of Nifty and Bank Nifty, are highly liquid and predominantly driven by large institutional participants (FIIs, DIIs). Understanding ORB and VWAP helps you ride their momentum, which is absolutely crucial for capturing quick and decisive moves in derivatives.</p>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-2xl font-bold mb-4 text-center text-[#36454F]">Volume-Price Harmony: The True Market Story</h3>
+                    <p class="text-gray-700 mb-4">Combining pure price action (ORB, VWAP) with robust volume analysis (FRVP) provides a holistic and deep understanding of the market. Volume confirms the strength and conviction behind price moves and identifies true areas of support and resistance that are backed by actual trading activity. This integrated approach helps you avoid deceptive false breakouts and significantly increases your trade quality.</p>
+                    <p class="text-gray-700">**What makes it possible in India:** The high liquidity and transparent volume data available on Indian exchanges (NSE, BSE) are vital. This allows for accurate calculation and reliable interpretation of FRVP and VWAP, giving you a powerful data-driven advantage over strategies that rely solely on price patterns.</p>
+                </div>
+                <div class="card p-6 lg:col-span-2">
+                    <h3 class="text-2xl font-bold mb-4 text-center text-[#36454F]">Adaptability Across Market Conditions: A Robust Framework</h3>
+                    <p class="text-gray-700 mb-4">While this blueprint is exceptionally effective in trending markets (where ORB breakouts are clean and VWAP acts as strong support/resistance), it's also designed to provide clear guidance in choppier or consolidating conditions. The interplay of ORB, FRVP, and VWAP helps you discern the market's current phase and adjust your approach accordingly.</p>
+                    <p class="text-gray-700">**Example (Nifty/Bank Nifty F&O Live Market):**</p>
+                    <ul class="list-disc list-inside text-left mx-auto max-w-2xl mt-4">
+                        <li><span class="font-bold">On a Strong Trending Day (e.g., Nifty Futures):</span> Imagine Nifty Futures breaks its 15-minute ORB high at 22,500. You observe a slight pullback towards VWAP at 22,480. This pullback is your high-probability entry. Your stop loss would be placed just below the ORB low (e.g., 22,450), and your target could be the previous day's VAH (e.g., 22,580). The confluence of ORB breakout, VWAP support, and a clear FRVP target makes this a high-conviction trade.</li>
+                        <li><span class="font-bold">On a Consolidation Day (e.g., Bank Nifty Futures):</span> Bank Nifty Futures might trade within a tight range, oscillating between its FRVP VAH (e.g., 48,000) and VAL (e.g., 47,800). Here, you might consider range-bound trades (buying VAL, selling VAH) or, more prudently, wait for a decisive ORB breakout from this consolidation range, which would signal a new trend. The strategy provides clarity even when the market lacks a strong direction.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="risk-management" class="mb-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-[#2F4F4F]">Mastering Risk & Reward: Your Profit Protector</h2>
+            <p class="text-center text-gray-700 max-w-3xl mx-auto mb-12">Successful trading isn't just about winning; it's fundamentally about managing your losses and maximizing your wins. This strategy prioritizes a disciplined 1:2 Risk-to-Reward ratio as its cornerstone, ensuring long-term profitability.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="card p-6 flex flex-col items-center">
+                    <h3 class="text-2xl font-bold mb-4 text-[#36454F]">The 1:2 Advantage: Why It Works Mathematically</h3>
+                    <div class="flex items-center space-x-6 mb-6">
+                        <div class="risk-reward-circle gradient-bg-blue">2x Reward</div>
+                        <div class="text-5xl font-extrabold text-[#2F4F4F]">:</div>
+                        <div class="risk-reward-circle gradient-bg-orange">1x Risk</div>
+                    </div>
+                    <p class="text-gray-700 text-center">**Why it matters:** This ratio means for every ₹100 you risk on a trade, you are aiming to make at least ₹200. This is a powerful mathematical edge. Even if you only win 40% of your trades (a very realistic win rate), you can still be consistently profitable. For example, out of 10 trades:</p>
+                    <ul class="list-disc list-inside text-left mx-auto max-w-xs mt-4 text-gray-700">
+                        <li>4 Wins @ 2x Reward: 4 * (+₹200) = +₹800</li>
+                        <li>6 Losses @ 1x Risk: 6 * (-₹100) = -₹600</li>
+                        <li>**Net Profit: +₹200**</li>
+                    </ul>
+                    <p class="text-gray-700 text-center mt-4">This demonstrates how a strong risk-reward ratio is the backbone of sustainable trading, allowing you to absorb losses and still grow your capital.</p>
+                    <div class="chart-container !h-64 !max-h-80 !p-0 !shadow-none !bg-transparent !shadow-none">
+                        <canvas id="riskRewardChart"></canvas>
+                    </div>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-2xl font-bold mb-4 text-center text-[#36454F]">Precise Entry & Exit: The Blueprint for Execution</h3>
+                    <ul class="text-left space-y-4 text-gray-700">
+                        <li><span class="font-bold text-[#32CD32]">🎯 Entry:</span> Your entry should be after a clean ORB breakout, ideally on a pullback to a confluence zone. This could be a retest of the ORB high/low (now acting as support/resistance), a touch of VWAP, or a strong FRVP level (POC, VAH, or VAL). Entering on pullbacks reduces risk and improves your R:R.</li>
+                        <li><span class="font-bold text-[#FF6B6B]">🛑 Stop Loss:</span> This is your maximum acceptable loss, defined *before* you enter the trade. For a long trade, place it just below the ORB low or a significant FRVP support level (e.g., VAL). For a short trade, place it just above the ORB high or a significant FRVP resistance level (e.g., VAH). Adhering to your stop loss is non-negotiable for capital preservation.</li>
+                        <li><span class="font-bold text-[#1E90FF]">💰 Take Profit:</span> Your profit target should be the next significant support/resistance level identified by FRVP (e.g., VAH/VAL from the previous day) or previous day's highs/lows. Always aim for at least 2 times your risk.</li>
+                    </ul>
+                    <div class="mt-8 p-4 rounded-lg bg-gray-50 border border-gray-200 text-sm text-gray-700">
+                        <p class="font-bold mb-2">Example Scenario (Indian F&O - Nifty Futures Live Trade):</p>
+                        <p>Imagine Nifty Futures opens, forms its 15-minute ORB, and then breaks the ORB high at 22,500 with strong volume. VWAP is currently at 22,480. The previous day's VAL (FRVP) is at 22,450, and the VAH is at 22,580.</p>
+                        <p>1. <span class="font-bold">Entry:</span> You wait for a pullback and enter a long position at 22,485 (near VWAP and just above ORB high).</p>
+                        <p>2. <span class="font-bold">Stop Loss:</span> You place your stop loss just below the ORB low/VAL, say at 22,440. (Your Risk = 45 points).</p>
+                        <p>3. <span class="font-bold">Take Profit:</span> You target the previous day's VAH, say at 22,575. (Your Reward = 90 points).</p>
+                        <p><span class="font-bold">Result:</span> Your Risk:Reward Ratio is 90/45 = 1:2. This is a clear, defined, and disciplined trade setup.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="emotional-discipline" class="mb-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-[#2F4F4F]">The Unseen Edge: Emotional Discipline in Live Trading</h2>
+            <p class="text-center text-gray-700 max-w-3xl mx-auto mb-12">Even the most robust strategy is futile without the right mindset. Emotional control is your ultimate, often overlooked, advantage in the volatile, fast-paced world of live Indian F&O trading.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="card p-6 flex flex-col items-center text-center">
+                    <div class="text-6xl mb-4 text-[#FF8C00]">😌</div>
+                    <h3 class="text-2xl font-bold mb-2 text-[#36454F]">Filtering Noise & Cultivating Patience</h3>
+                    <p class="text-gray-700">**Why it matters:** The first hour of Indian markets is notoriously chaotic, filled with erratic moves and false signals driven by opening volatility. By patiently observing this period, you effectively filter out irrational noise and premature moves. This disciplined waiting gives you a clearer, more objective picture of the market's true intent, significantly reducing impulsive decisions driven by fear of missing out (FOMO) or panic, which are common pitfalls for new traders.</p>
+                    <div class="mt-6 w-full h-32 bg-gray-100 rounded-lg flex items-center justify-center relative overflow-hidden">
+                        <div class="w-16 h-16 bg-blue-300 rounded-full absolute -left-4 animate-bounce-slow"></div>
+                        <div class="w-20 h-20 bg-green-300 rounded-full absolute -right-4 animate-bounce-slow" style="animation-delay: 0.5s;"></div>
+                        <div class="w-12 h-12 bg-red-300 rounded-full absolute top-4 left-1/4 animate-bounce-slow" style="animation-delay: 1s;"></div>
+                        <div class="w-10 h-10 bg-yellow-300 rounded-full absolute bottom-4 right-1/3 animate-bounce-slow" style="animation-delay: 1.5s;"></div>
+                        <div class="text-xl font-bold text-gray-800 z-10 bg-white bg-opacity-80 p-2 rounded">Market Noise Filtered</div>
+                    </div>
+                </div>
+                <div class="card p-6 flex flex-col items-center text-center">
+                    <div class="text-6xl mb-4 text-[#32CD32]">🤖</div>
+                    <h3 class="text-2xl font-bold mb-2 text-[#36454F]">Reacting to Structure, Not Emotions: Your Trading Robot</h3>
+                    <p class="text-gray-700">**Why it matters:** A systematic strategy like this blueprint provides clear, objective rules for every aspect of your trade – entry, exit, and risk management. This means you react to predefined market structures (ORB, FRVP, VWAP confluence) rather than succumbing to the powerful emotions of fear, greed, or hope. This mechanical, rule-based approach builds immense consistency in your trading performance and effectively removes emotional decision-making, which is the single biggest cause of losses for most traders.</p>
+                    <div class="mt-6 w-full h-32 bg-gray-100 rounded-lg flex items-center justify-around relative">
+                        <div class="flex flex-col items-center">
+                            <div class="text-4xl text-[#1E90FF]">📈</div>
+                            <span class="text-sm font-bold text-gray-700">ORB Break</span>
+                        </div>
+                        <div class="text-4xl text-[#2F4F4F]">→</div>
+                        <div class="flex flex-col items-center">
+                            <div class="text-4xl text-[#32CD32]">✅</div>
+                            <span class="text-sm font-bold text-gray-700">Execute Plan</span>
+                        </div>
+                        <div class="text-4xl text-[#2F4F4F]">→</div>
+                        <div class="flex flex-col items-center">
+                            <div class="text-4xl text-[#FF8C00]">🧘</div>
+                            <span class="text-sm font-bold text-gray-700">Stay Calm</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <footer class="text-center mt-16 py-8 border-t border-gray-200">
+            <p class="text-gray-600 text-lg">This infographic provides a high-level overview of a trading strategy for educational purposes only. Trading involves significant risk.</p>
+            <p class="text-gray-500 text-sm mt-2">Strategy Developed by ❤️ <span class="font-bold">@Nerdyintruder</span></p>
+            <p class="text-gray-500 text-sm mt-1">© 2025 Trading Blueprint. All rights reserved.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        // Global chart instances to allow re-rendering/updating
+        let sectorChart, bullishOrbChart, bearishOrbChart, vwapChart, riskRewardChart;
+
+        const wrapLabel = (label) => {
+            const maxLength = 16;
+            if (label.length <= maxLength) return label;
+            const words = label.split(' ');
+            let currentLine = '';
+            const lines = [];
+            for (const word of words) {
+                if ((currentLine + ' ' + word).length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine += ' ' + word;
+                }
+            }
+            lines.push(currentLine.trim());
+            return lines;
+        };
+        
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+              return label.join(' ');
+            } else {
+              return label;
+            }
+        };
+
+        const getPaletteColors = (isDarkMode) => {
+            if (isDarkMode) {
+                return {
+                    primaryBlue: '#45B7D1', // Lighter Blue
+                    accentGreen: '#4ECDC4', // Lighter Teal
+                    accentOrange: '#F9A825', // Lighter Orange
+                    neutralDark: '#E2E8F0', // Light Gray for text
+                    lightGrey: '#A0AEC0', // Medium Gray for neutral elements
+                    dangerRed: '#FF6B6B', // Red
+                    secondaryBlue: '#1E90FF', // Darker Blue for contrast
+                    cardBg: '#2D3748', // Dark card background
+                    bodyBg: '#1A202C', // Dark body background
+                    textPrimary: '#E2E8F0',
+                    textSecondary: '#CBD5E0',
+                    border: '#4A5568',
+                    flowchartBg: '#2F4F4F',
+                    flowchartBorderTeal: '#32CD32',
+                    flowchartBorderCyan: '#1E90FF',
+                    flowchartBorderYellow: '#FF8C00',
+                    flowchartBorderRed: '#FF4500',
+                    flowchartArrow: '#45B7D1'
+                };
+            } else {
+                return {
+                    primaryBlue: '#1E90FF',
+                    accentGreen: '#32CD32',
+                    accentOrange: '#FF8C00',
+                    neutralDark: '#2F4F4F',
+                    lightGrey: '#CED4DA',
+                    dangerRed: '#FF6B6B',
+                    secondaryBlue: '#45B7D1',
+                    cardBg: 'white',
+                    bodyBg: '#F0F8FF',
+                    textPrimary: '#36454F',
+                    textSecondary: '#2D3748',
+                    border: '#EDF2F7',
+                    flowchartBg: '#E0FFFF',
+                    flowchartBorderTeal: '#4ECDC4',
+                    flowchartBorderCyan: '#45B7D1',
+                    flowchartBorderYellow: '#F9A825',
+                    flowchartBorderRed: '#FF6B6B',
+                    flowchartArrow: '#1E90FF'
+                };
+            }
+        };
+
+        const updateChartColors = (chart, palette) => {
+            if (!chart || !chart.data || !chart.data.datasets) return;
+
+            chart.data.datasets.forEach(dataset => {
+                if (dataset.label === 'Momentum Score (0-100)') {
+                    dataset.backgroundColor = [palette.primaryBlue, palette.accentGreen, palette.secondaryBlue, palette.lightGrey, palette.lightGrey, palette.lightGrey];
+                    dataset.borderColor = palette.cardBg;
+                } else if (dataset.label === 'Stock Price') {
+                    // Adjust based on whether it's bullish (primaryBlue) or bearish (dangerRed)
+                    if (chart.canvas.id === 'bullishOrbChart') {
+                        dataset.borderColor = palette.primaryBlue;
+                        dataset.backgroundColor = `rgba(${parseInt(palette.primaryBlue.slice(1,3), 16)}, ${parseInt(palette.primaryBlue.slice(3,5), 16)}, ${parseInt(palette.primaryBlue.slice(5,7), 16)}, 0.15)`;
+                        dataset.pointBackgroundColor = palette.primaryBlue;
+                    } else if (chart.canvas.id === 'bearishOrbChart') {
+                        dataset.borderColor = palette.dangerRed;
+                        dataset.backgroundColor = `rgba(${parseInt(palette.dangerRed.slice(1,3), 16)}, ${parseInt(palette.dangerRed.slice(3,5), 16)}, ${parseInt(palette.dangerRed.slice(5,7), 16)}, 0.15)`;
+                        dataset.pointBackgroundColor = palette.dangerRed;
+                    } else if (chart.canvas.id === 'vwapChart') {
+                        dataset.borderColor = palette.dangerRed; // Price line for VWAP chart
+                        dataset.backgroundColor = `rgba(${parseInt(palette.dangerRed.slice(1,3), 16)}, ${parseInt(palette.dangerRed.slice(3,5), 16)}, ${parseInt(palette.dangerRed.slice(5,7), 16)}, 0.1)`;
+                        dataset.pointBackgroundColor = palette.dangerRed;
+                    }
+                } else if (dataset.label === 'ORB High (Resistance)') {
+                    dataset.borderColor = palette.accentOrange;
+                } else if (dataset.label === 'ORB Low (Support)') {
+                    dataset.borderColor = palette.accentOrange; // Bearish ORB low is active
+                } else if (dataset.label === 'VWAP') {
+                    dataset.borderColor = palette.accentGreen;
+                } else if (dataset.label === 'Potential Reward (2x)') {
+                    dataset.backgroundColor = palette.primaryBlue;
+                } else if (dataset.label === 'Risk (1x)') {
+                    dataset.backgroundColor = palette.dangerRed;
+                }
+                // For ORB charts, ensure the *non-active* ORB line is lightGrey
+                if (chart.canvas.id === 'bullishOrbChart' && dataset.label === 'ORB Low (Support)') {
+                    dataset.borderColor = palette.lightGrey;
+                } else if (chart.canvas.id === 'bearishOrbChart' && dataset.label === 'ORB High (Resistance)') {
+                    dataset.borderColor = palette.lightGrey;
+                }
+                if (chart.canvas.id === 'vwapChart' && dataset.label === 'ORB High') {
+                     dataset.borderColor = `rgba(${parseInt(palette.accentOrange.slice(1,3), 16)}, ${parseInt(palette.accentOrange.slice(3,5), 16)}, ${parseInt(palette.accentOrange.slice(5,7), 16)}, 0.5)`;
+                }
+            });
+
+            if (chart.options.plugins.title) {
+                chart.options.plugins.title.color = palette.neutralDark;
+            }
+            if (chart.options.plugins.legend && chart.options.plugins.legend.labels) {
+                chart.options.plugins.legend.labels.color = palette.neutralDark;
+            }
+            if (chart.options.scales) {
+                Object.values(chart.options.scales).forEach(scale => {
+                    if (scale.ticks) scale.ticks.color = palette.neutralDark;
+                    if (scale.title) scale.title.color = palette.neutralDark;
+                    if (scale.grid) scale.grid.color = palette.lightGrey; // Adjust grid line color
+                });
+            }
+            chart.update();
+        };
+
+        const renderCharts = (isDarkMode) => {
+            const palette = getPaletteColors(isDarkMode);
+
+            const baseChartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: { size: 14 },
+                            color: palette.neutralDark
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        },
+                        bodyFont: { size: 14 },
+                        titleFont: { size: 16, weight: 'bold' }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { font: { size: 12 }, color: palette.neutralDark },
+                        grid: { color: palette.lightGrey }
+                    },
+                    x: {
+                        ticks: { font: { size: 12 }, color: palette.neutralDark },
+                        grid: { display: false }
+                    }
+                }
+            };
+
+            // Destroy existing charts if they exist
+            if (sectorChart) sectorChart.destroy();
+            if (bullishOrbChart) bullishOrbChart.destroy();
+            if (bearishOrbChart) bearishOrbChart.destroy();
+            if (vwapChart) vwapChart.destroy();
+            if (riskRewardChart) riskRewardChart.destroy();
+
+            // Sector Performance Chart
+            const sectorCtx = document.getElementById('sectorPerformanceChart').getContext('2d');
+            sectorChart = new Chart(sectorCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Technology', 'Healthcare', 'Financials', 'Consumer Goods', 'Energy', 'Industrials'].map(wrapLabel),
+                    datasets: [{
+                        label: 'Momentum Score (0-100)',
+                        data: [92, 85, 70, 55, 40, 30],
+                        backgroundColor: [palette.primaryBlue, palette.accentGreen, palette.secondaryBlue, palette.lightGrey, palette.lightGrey, palette.lightGrey],
+                        borderColor: palette.cardBg,
+                        borderWidth: 1,
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    ...baseChartOptions,
+                    indexAxis: 'x',
+                    scales: {
+                        y: {
+                            ...baseChartOptions.scales.y,
+                            max: 100,
+                            title: { display: true, text: 'Momentum Score', color: palette.neutralDark }
+                        },
+                        x: { ...baseChartOptions.scales.x }
+                    }
+                }
+            });
+
+            // Bullish ORB Chart
+            const bullishOrbCtx = document.getElementById('bullishOrbChart').getContext('2d');
+            bullishOrbChart = new Chart(bullishOrbCtx, {
+                type: 'line',
+                data: {
+                    labels: ['9:30', '9:35', '9:40', '9:45', '9:50', '9:55', '10:00', '10:05', '10:10', '10:15'],
+                    datasets: [{
+                        label: 'Stock Price',
+                        data: [100.5, 101, 100.8, 101.2, 102.5, 103.8, 104.5, 104.2, 105.1, 105.8],
+                        borderColor: palette.primaryBlue,
+                        backgroundColor: `rgba(${parseInt(palette.primaryBlue.slice(1,3), 16)}, ${parseInt(palette.primaryBlue.slice(3,5), 16)}, ${parseInt(palette.primaryBlue.slice(5,7), 16)}, 0.15)`,
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 4,
+                        pointBackgroundColor: palette.primaryBlue
+                    }, {
+                        label: 'ORB High (Resistance)',
+                        data: [101.2, 101.2, 101.2, 101.2, 101.2, 101.2, 101.2, 101.2, 101.2, 101.2],
+                        borderColor: palette.accentOrange,
+                        borderDash: [6, 6],
+                        fill: false,
+                        pointRadius: 0,
+                        borderWidth: 2
+                    }, {
+                        label: 'ORB Low (Support)',
+                        data: [100.5, 100.5, 100.5, 100.5, 100.5, 100.5, 100.5, 100.5, 100.5, 100.5],
+                        borderColor: palette.lightGrey, // Neutral color for non-active ORB line
+                        borderDash: [6, 6],
+                        fill: false,
+                        pointRadius: 0,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    ...baseChartOptions,
+                    scales: {
+                        y: { ...baseChartOptions.scales.y, beginAtZero: false },
+                        x: { ...baseChartOptions.scales.x }
+                    }
+                }
+            });
+
+            // Bearish ORB Chart
+            const bearishOrbCtx = document.getElementById('bearishOrbChart').getContext('2d');
+            bearishOrbChart = new Chart(bearishOrbCtx, {
+                type: 'line',
+                data: {
+                    labels: ['9:30', '9:35', '9:40', '9:45', '9:50', '9:55', '10:00', '10:05', '10:10', '10:15'],
+                    datasets: [{
+                        label: 'Stock Price',
+                        data: [105.8, 105.2, 105.5, 104.8, 103.5, 102.2, 101.5, 101.8, 100.9, 100.2],
+                        borderColor: palette.dangerRed,
+                        backgroundColor: `rgba(${parseInt(palette.dangerRed.slice(1,3), 16)}, ${parseInt(palette.dangerRed.slice(3,5), 16)}, ${parseInt(palette.dangerRed.slice(5,7), 16)}, 0.15)`,
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 4,
+                        pointBackgroundColor: palette.dangerRed
+                    }, {
+                        label: 'ORB High (Resistance)',
+                        data: [104.8, 104.8, 104.8, 104.8, 104.8, 104.8, 104.8, 104.8, 104.8, 104.8],
+                        borderColor: palette.lightGrey, // Neutral color for non-active ORB line
+                        borderDash: [6, 6],
+                        fill: false,
+                        pointRadius: 0,
+                        borderWidth: 2
+                    }, {
+                        label: 'ORB Low (Support)',
+                        data: [104.0, 104.0, 104.0, 104.0, 104.0, 104.0, 104.0, 104.0, 104.0, 104.0],
+                        borderColor: palette.accentOrange,
+                        borderDash: [6, 6],
+                        fill: false,
+                        pointRadius: 0,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    ...baseChartOptions,
+                    scales: {
+                        y: { ...baseChartOptions.scales.y, beginAtZero: false },
+                        x: { ...baseChartOptions.scales.x }
+                    }
+                }
+            });
+
+            // VWAP Chart
+            const vwapCtx = document.getElementById('vwapChart').getContext('2d');
+            vwapChart = new Chart(vwapCtx, {
+                type: 'line',
+                data: {
+                    labels: ['9:30', '9:45', '10:00', '10:15', '10:30', '10:45', '11:00'],
+                    datasets: [{
+                        label: 'Stock Price',
+                        data: [100.0, 101.5, 103.0, 102.5, 103.5, 104.0, 105.0],
+                        borderColor: palette.dangerRed,
+                        backgroundColor: `rgba(${parseInt(palette.dangerRed.slice(1,3), 16)}, ${parseInt(palette.dangerRed.slice(3,5), 16)}, ${parseInt(palette.dangerRed.slice(5,7), 16)}, 0.1)`,
+                        fill: false,
+                        tension: 0.2,
+                        pointRadius: 5,
+                        pointBackgroundColor: palette.dangerRed
+                    }, {
+                        label: 'VWAP',
+                        data: [100.0, 100.8, 101.5, 102.0, 102.8, 103.5, 104.2],
+                        borderColor: palette.accentGreen,
+                        backgroundColor: 'transparent',
+                        fill: false,
+                        tension: 0.2,
+                        pointRadius: 0,
+                        borderWidth: 3
+                    }, {
+                        label: 'ORB High',
+                        data: [101.0, 101.0, 101.0, 101.0, 101.0, 101.0, 101.0],
+                        borderColor: `rgba(${parseInt(palette.accentOrange.slice(1,3), 16)}, ${parseInt(palette.accentOrange.slice(3,5), 16)}, ${parseInt(palette.accentOrange.slice(5,7), 16)}, 0.5)`,
+                        borderDash: [4, 4],
+                        fill: false,
+                        pointRadius: 0,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    ...baseChartOptions,
+                    scales: {
+                        y: { ...baseChartOptions.scales.y, beginAtZero: false },
+                        x: { ...baseChartOptions.scales.x }
+                    }
+                }
+            });
+
+            // Risk/Reward Chart
+            const riskRewardCtx = document.getElementById('riskRewardChart').getContext('2d');
+            riskRewardChart = new Chart(riskRewardCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Potential Reward (2x)', 'Risk (1x)'],
+                    datasets: [{
+                        data: [2, 1],
+                        backgroundColor: [palette.primaryBlue, palette.dangerRed],
+                        borderColor: palette.cardBg,
+                        borderWidth: 6,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { size: 14 },
+                                color: palette.neutralDark
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback,
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed + ' Unit(s)';
+                                    }
+                                    return label;
+                                }
+                            },
+                            bodyFont: { size: 14 },
+                            titleFont: { size: 16, weight: 'bold' }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Optimal 1:2 Risk to Reward Ratio',
+                            font: { size: 18, weight: 'bold' },
+                            color: palette.neutralDark
+                        }
+                    }
+                }
+            });
+        };
+
+        // Dark Mode Toggle Logic
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+
+        const loadTheme = () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            htmlElement.className = savedTheme;
+            themeToggleBtn.textContent = savedTheme === 'dark' ? '☀️' : '�';
+            renderCharts(savedTheme === 'dark');
+        };
+
+        const toggleTheme = () => {
+            if (htmlElement.classList.contains('light')) {
+                htmlElement.classList.remove('light');
+                htmlElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                themeToggleBtn.textContent = '☀️';
+                renderCharts(true);
+            } else {
+                htmlElement.classList.remove('dark');
+                htmlElement.classList.add('light');
+                localStorage.setItem('theme', 'light');
+                themeToggleBtn.textContent = '🌙';
+                renderCharts(false);
+            }
+        };
+
+        themeToggleBtn.addEventListener('click', toggleTheme);
+
+        // Load theme and render charts on page load
+        window.onload = loadTheme;
+    </script>
+</body>
+</html>
+�
